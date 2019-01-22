@@ -202,3 +202,7 @@ C:\Users\ROCH\Documents\ASP.NETMVC\Projekt\Projekt\obj\Debug\Projekt.csproj.Core
 C:\Users\ROCH\Documents\ASP.NETMVC\Projekt\Projekt\obj\Debug\Projekt.csproj.CopyComplete
 C:\Users\ROCH\Documents\ASP.NETMVC\Projekt\Projekt\obj\Debug\Projekt.dll
 C:\Users\ROCH\Documents\ASP.NETMVC\Projekt\Projekt\obj\Debug\Projekt.pdb
+C:\Users\ROCH\Documents\ASP.NETMVC\Projekt\Projekt\bin\PagedList.dll
+C:\Users\ROCH\Documents\ASP.NETMVC\Projekt\Projekt\bin\PagedList.Mvc.dll
+C:\Users\ROCH\Documents\ASP.NETMVC\Projekt\Projekt\bin\PagedList.xml
+C:\Users\ROCH\Documents\ASP.NETMVC\Projekt\Projekt\bin\PagedList.Mvc.xml

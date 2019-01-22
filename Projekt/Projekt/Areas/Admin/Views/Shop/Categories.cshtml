@@ -21,7 +21,7 @@
 
 else
 {
-    <table class="table sorting" id="pages">
+    <table class="table sorting categories" id="pages">
         <tr class="home">
             <th>
                 @Html.DisplayNameFor(model => model.Name)
@@ -31,8 +31,9 @@ else
 
         @foreach (var item in Model)
         {
-            <tr>
+            <tr id ="id_@item.Id">
                 <td>
+                    <div class="ajaxdivtd"></div>
                     @Html.EditorFor(modelItem => item.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                 </td>
 
@@ -80,6 +81,8 @@ else
 
                 var url = "/admin/shop/AddNewCategory";
 
+
+
                 $.post(url, { catName: catName }, function (data) {
                     var response = data.trim();
 
@@ -105,20 +108,17 @@ else
             });
 
 
-            //Confirm delete page
-            $(function () {
-                $("a.delete").click(function () {
-                    if (!confirm("Potwierdź usunięcie strony ")) return false;
-                });
-            })
+            //////////////////////////////////////////////////////////////////\
 
-
+            /*
+            * Confirm category deletion
+            */
             $("table#pages tbody").sortable({
                 items: "tr:not(.home)",
                 placeholder: "ui-state-highlight",
                 update: function () {
                     var ids = $("table#pages tbody").sortable("serialize");
-                    var url = "/Admin/Pages/ReorderPages";
+                    var url = "/Admin/Shop/ReorderCategories";
 
                     $.post(url, ids, function (data) {
 
@@ -126,6 +126,70 @@ else
 
                 }
             });
+
+
+
+            /*
+             *  Delete category
+             */
+
+            $("body").on("click", "a.delete", function () {
+                if (!confirm("Confirm page deletion")) return false;
+            });
+
+            /*
+             *  Rename category
+             */
+             
+            var orginalTextBoxValue;
+
+            $("table#pages input.text-box").dblclick(function () {
+                orginalTextBoxValue = $(this).val();
+                $(this).attr("readonly", false);
+            });
+
+            $("table#pages input.text-box").keyup(function (e) {
+                if (e.keyCode == 13) {
+                    $(this).blur();
+                }
+            });
+
+            $("table#pages input.text-box").blur(function () {
+
+                var $this = $(this);
+                var ajaxdiv = $this.parent().find(".ajaxdivtd");
+                var newCatName = $this.val();
+                var id = $this.parent().parent().attr("id").substring(3);
+                var url = "/admin/shop/RenameCategory";
+
+                if (newCatName.length < 2) {
+                    alert("Nazwa kategorii musi posiadać więcej niż 2 znaki.");
+                    $this.attr("readonly", true);
+                    return false;
+                }
+
+                $.post(url, { newCatName: newCatName, id: id }, function (data) {
+                    var response = data.trim();
+
+                    if (response == "titletaken") {
+                        $this.val(orginalTextBoxValue);
+                        ajaxdiv.html("<span class='alert alert-danger'>Kategoria o danej nazwie już istnieje!</span>").show();
+                    }
+                    else {
+                        ajaxdiv.html("<span class='alert alert-danger'>Nazwa kategorii została zmieniona!</span>").show();
+                    }
+
+                    setTimeout(function () {
+                        ajaxdiv.fadeOut("fast", function () {
+                            ajaxdiv.html("");
+                        });
+                    }, 2000);
+                    }).done(function () {
+                        $(this).attr("readonly", true);
+                });
+            });
+           
         });
+
     </script>
 }
